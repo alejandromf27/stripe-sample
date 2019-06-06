@@ -1,11 +1,17 @@
 try:
   import stripe
-  stripe.api_key = "sk_test_5D6yzdOiPWgciMYeF8YwwCXs"
+  stripe.api_key = "you api key"
 
-  for customer in stripe.Customer.list(limit=3):
-    print(customer['description'], '###### Cards #####', end='\n')
-    for card in customer.sources.list(object='card'):
-      print(card, end='\n')
+  #get customer
+  customer = stripe.Customer.retrieve('a customer key')
+
+  #CREATE CHARGE
+  charge = stripe.Charge.create(
+    amount=40000, #(400.00)
+    currency="usd",
+    description="Charge for SAMPLE 1",
+    customer=customer.id
+  )
 
 except stripe.error.CardError as e:
   # Since it's a decline, stripe.error.CardError will be caught
